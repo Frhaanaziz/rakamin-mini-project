@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
-import { Inter as FontSans } from 'next/font/google';
+import { Nunito_Sans as FontSans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import './globals.css';
+import Header from '@/components/layouts/Header';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -27,6 +28,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
+        <Header />
         {children}
       </body>
     </html>
