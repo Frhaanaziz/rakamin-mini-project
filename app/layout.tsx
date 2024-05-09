@@ -29,7 +29,12 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <Toaster position="top-center" expand={false} richColors />
+        <Toaster
+          position="top-center"
+          expand={false}
+          richColors
+          theme="light"
+        />
         <Header />
         {children}
       </body>
