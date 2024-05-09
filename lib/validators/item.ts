@@ -2,7 +2,10 @@ import { z } from 'zod';
 
 export const itemSchema = z.object({
   id: z.number().int(),
-  name: z.string().min(1, { message: 'Name must be at least 1 character' }),
+  name: z
+    .string()
+    .trim()
+    .min(1, { message: 'Name must be at least 1 character' }),
   done: z.boolean().nullable(),
   todo_id: z.number().int(),
   created_at: z.coerce.date(),
