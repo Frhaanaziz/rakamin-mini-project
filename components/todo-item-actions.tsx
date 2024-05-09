@@ -11,11 +11,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-
 import { Item } from '@/types';
 import UpdateTodoItemDialog from './dialogs/update-todo-item-dialog';
 import DeleteTodoItemDialog from './dialogs/delete-todo-item-dialog';
 import { Button } from './ui/button';
+import React from 'react';
 
 type TodoItemActionsProps = {
   todoItem: Item;
@@ -23,6 +23,8 @@ type TodoItemActionsProps = {
 };
 
 const TodoItemActions = ({ todoItem, todoId }: TodoItemActionsProps) => {
+  const [isDeleting, setIsDeleting] = React.useState<boolean>(false);
+
   return (
     <Popover>
       <PopoverTrigger className={'ml-2'} asChild>
@@ -55,13 +57,14 @@ const TodoItemActions = ({ todoItem, todoId }: TodoItemActionsProps) => {
           dialogTrigger={
             <div
               className={`flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer ${
-                status === 'executing' && 'opacity-50 pointer-events-none'
+                isDeleting && 'opacity-50 pointer-events-none'
               }`}
             >
               <Trash2Icon size={14} strokeWidth={2.5} />
               <span>Delete</span>
             </div>
           }
+          isDeleting={setIsDeleting}
           itemId={todoItem.id}
           todoId={todoId}
         />

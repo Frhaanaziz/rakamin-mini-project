@@ -19,16 +19,19 @@ type DeleteTodoItemDialogProps = {
   itemId: number;
   todoId: number;
   dialogTrigger: JSX.Element;
+  isDeleting?: (boolean: boolean) => void;
 };
 
 function DeleteTodoItemDialog({
   itemId,
   todoId,
   dialogTrigger,
+  isDeleting,
 }: DeleteTodoItemDialogProps) {
   const toastId = useId();
-  const { execute: deleteItem, status } = useAction(deleteTodoItem, {
+  const { execute: deleteItem } = useAction(deleteTodoItem, {
     onExecute: () => {
+      isDeleting?.(true);
       toast.loading('Deleting task...', { id: toastId });
     },
     onSuccess: () => {
@@ -40,6 +43,7 @@ function DeleteTodoItemDialog({
         id: toastId,
       });
     },
+    onSettled: () => isDeleting?.(false),
   });
 
   return (
