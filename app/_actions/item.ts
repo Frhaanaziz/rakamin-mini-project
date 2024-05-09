@@ -10,6 +10,7 @@ import {
   updateItemSchema,
 } from '@/lib/validators/item';
 import { createSafeActionClient } from 'next-safe-action';
+import { revalidatePath } from 'next/cache';
 
 export const action = createSafeActionClient();
 
@@ -19,6 +20,7 @@ export const createTodoItem = action(createItemSchema, async (item) => {
   try {
     const { data } = await backendApi.post(`/todos/${todo_id}/items`, rest);
 
+    revalidatePath('/');
     return { error: null, data };
   } catch (error) {
     console.error('Error creating item:', error);
@@ -44,6 +46,7 @@ export const updateTodoItem = action(updateItemSchema, async (item) => {
       item
     );
 
+    revalidatePath('/');
     return { error: null, data };
   } catch (error) {
     console.error('Error updating item:', error);
@@ -57,6 +60,7 @@ export const deleteTodoItem = action(deleteItemSchema, async (item) => {
       `/todos/${item.todo_id}/items/${item.id}`
     );
 
+    revalidatePath('/');
     return { error: null, data };
   } catch (error) {
     console.error('Error deleting item:', error);
@@ -73,6 +77,7 @@ export const moveTodoItem = action(moveItemSchema, async (item) => {
       rest
     );
 
+    revalidatePath('/');
     return { error: null, data };
   } catch (error) {
     console.error('Error moving item:', error);
