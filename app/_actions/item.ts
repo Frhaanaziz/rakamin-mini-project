@@ -31,13 +31,15 @@ export const getTodoItems = action(getItemsSchema, async (item) => {
 });
 
 export const updateTodoItem = action(updateItemSchema, async (item) => {
-  const { data } = await backendApi.patch(
-    `/todos/${item.todo_id}/items/${item.id}`,
-    item
-  );
+  const { todo_id, id, ...rest } = item;
+
+  const [_, { data }] = await Promise.all([
+    await backendApi.delete(`/todos/${todo_id}/items/${id}`),
+    await backendApi.post(`/todos/${todo_id}/items`, rest),
+  ]);
 
   revalidatePath('/');
-  return data;
+  return data as Item;
 });
 
 export const deleteTodoItem = action(deleteItemSchema, async (item) => {
