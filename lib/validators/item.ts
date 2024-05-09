@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { coerce, z } from 'zod';
 import { todoSchema } from './todo';
 
 export const itemSchema = z.object({
@@ -7,7 +7,7 @@ export const itemSchema = z.object({
     .string()
     .trim()
     .min(1, { message: 'Name must be at least 1 character' }),
-  progress_percentage: z
+  progress_percentage: z.coerce
     .number()
     .min(0, { message: 'Progress percentage must be at least 0' })
     .max(100, { message: 'Progress percentage must be at most 100' }),
