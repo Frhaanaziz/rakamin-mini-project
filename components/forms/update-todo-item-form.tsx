@@ -100,6 +100,7 @@ export default function UpdateTodoItemForm({
             type="button"
             variant={'secondary'}
             disabled={status === 'executing'}
+            onClick={() => setIsDialogOpen(false)}
           >
             Cancel
           </Button>
