@@ -1,19 +1,67 @@
+'use client';
 import { CheckIcon } from 'lucide-react';
 import { Progress } from './ui/progress';
 
-import { Item } from '@/types';
+import { Item, ItemDragData } from '@/types';
 import TodoItemActions from './todo-item-actions';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { cva } from 'class-variance-authority';
 
 interface TodoItemProps {
   todoItem: Item;
-  todoId: number;
 }
 
-const TodoItem = ({ todoItem, todoId }: TodoItemProps) => {
-  const { name, progress_percentage } = todoItem;
+/**
+ * Renders a single todo item.
+ * @param {TodoItemProps} props - The props containing the todo item data.
+ * @returns {JSX.Element} The rendered todo item component.
+ */
+const TodoItem = ({ todoItem }: TodoItemProps) => {
+  const { id, name, progress_percentage } = todoItem;
+
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id,
+    data: {
+      type: 'Item',
+      item: todoItem,
+    } satisfies ItemDragData,
+    attributes: {
+      roleDescription: 'Task',
+    },
+  });
+
+  const style = {
+    transition,
+    transform: CSS.Translate.toString(transform),
+  };
+
+  const variants = cva('bg-[#FAFAFA] border border-border rounded p-4', {
+    variants: {
+      dragging: {
+        default: '',
+        over: 'opacity-40',
+      },
+    },
+  });
 
   return (
-    <div className="bg-[#FAFAFA] border border-border rounded p-4">
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className={variants({
+        dragging: isDragging ? 'over' : undefined,
+      })}
+    >
       <p className="font-bold text-sm">{name}</p>
 
       <div className="border-b-[2px] border-dashed my-2" />
@@ -35,7 +83,7 @@ const TodoItem = ({ todoItem, todoId }: TodoItemProps) => {
           </span>
         )}
 
-        <TodoItemActions todoItem={todoItem} todoId={todoId} />
+        <TodoItemActions todoItem={todoItem} />
       </div>
     </div>
   );
