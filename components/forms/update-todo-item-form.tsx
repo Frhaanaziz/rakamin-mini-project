@@ -27,21 +27,24 @@ type UpdateTodoItemType = z.infer<typeof updateItemSchema>;
 interface UpdateTodoItemFormProps
   extends React.ComponentPropsWithoutRef<'form'> {
   setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  todoId: number;
   todoItem: Item;
 }
 
+/**
+ * Renders a form for updating a todo item.
+ * @param {Object} props - The component props.
+ * @param {Function} props.setIsDialogOpen - A function to set the state of the dialog.
+ * @param {string} props.className - The CSS class name for the form.
+ * @param {TodoItem} props.todoItem - The todo item to be updated.
+ * @returns {JSX.Element} The rendered component.
+ */
 export default function UpdateTodoItemForm({
   setIsDialogOpen,
-  todoId,
   className,
   todoItem,
   ...props
 }: UpdateTodoItemFormProps) {
-  const defaultValues = {
-    ...todoItem,
-    todo_id: todoId,
-  } satisfies UpdateTodoItemType;
+  const defaultValues = todoItem satisfies UpdateTodoItemType;
 
   const form = useForm<UpdateTodoItemType>({
     resolver: zodResolver(updateItemSchema),
