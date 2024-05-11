@@ -1,7 +1,6 @@
 import TodoGroupSection from '@/components/todo-group-section';
 import { getTodos } from './_actions/todo';
 import { getTodoItems } from './_actions/item';
-import { Suspense } from 'react';
 
 export default async function Home() {
   const { data: todos } = await getTodos(undefined);
