@@ -19,10 +19,14 @@ import React from 'react';
 
 type TodoItemActionsProps = {
   todoItem: Item;
-  todoId: number;
 };
 
-const TodoItemActions = ({ todoItem, todoId }: TodoItemActionsProps) => {
+/**
+ * Renders the actions for a todo item.
+ * @param {TodoItemActionsProps} props - The component props.
+ * @returns {JSX.Element} - The rendered component.
+ */
+const TodoItemActions = ({ todoItem }: TodoItemActionsProps) => {
   const [isDeleting, setIsDeleting] = React.useState<boolean>(false);
 
   return (
@@ -50,7 +54,6 @@ const TodoItemActions = ({ todoItem, todoId }: TodoItemActionsProps) => {
             </div>
           }
           todoItem={todoItem}
-          todoId={todoId}
         />
 
         <DeleteTodoItemDialog
@@ -65,8 +68,7 @@ const TodoItemActions = ({ todoItem, todoId }: TodoItemActionsProps) => {
             </div>
           }
           isDeleting={setIsDeleting}
-          itemId={todoItem.id}
-          todoId={todoId}
+          todoItem={todoItem}
         />
       </PopoverContent>
     </Popover>
