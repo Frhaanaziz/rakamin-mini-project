@@ -10,6 +10,10 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
+/**
+ * Renders a dialog component for creating a new todo.
+ * @returns JSX.Element
+ */
 const CreateTodoDialog = () => {
   const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false);
 
