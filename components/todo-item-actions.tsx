@@ -16,6 +16,9 @@ import UpdateTodoItemDialog from './dialogs/update-todo-item-dialog';
 import DeleteTodoItemDialog from './dialogs/delete-todo-item-dialog';
 import { Button } from './ui/button';
 import React from 'react';
+import { moveTodoItem as moveTodoItemAction } from '@/app/_actions/item';
+import { useAction } from 'next-safe-action/hooks';
+import { useTodosContext } from '@/contexts/TodosContext';
 
 type TodoItemActionsProps = {
   todoItem: Item;
@@ -27,7 +30,38 @@ type TodoItemActionsProps = {
  * @returns {JSX.Element} - The rendered component.
  */
 const TodoItemActions = ({ todoItem }: TodoItemActionsProps) => {
+  const todos = useTodosContext();
   const [isDeleting, setIsDeleting] = React.useState<boolean>(false);
+
+  const { execute: moveTodoItem, status } = useAction(moveTodoItemAction);
+
+  async function handleMoveRight() {
+    if (!todos) return;
+
+    const todoIndex = todos.findIndex((todo) => todo.id === todoItem.todo_id);
+    const nextTodoIndex = todoIndex + 1;
+    const nextTodo = todos[nextTodoIndex];
+
+    moveTodoItem({
+      id: todoItem.id,
+      todo_id: todoItem.todo_id,
+      target_todo_id: nextTodo.id,
+    });
+  }
+
+  async function handleMoveLeft() {
+    if (!todos) return;
+
+    const todoIndex = todos.findIndex((todo) => todo.id === todoItem.todo_id);
+    const previousTodoIndex = todoIndex - 1;
+    const previousTodo = todos[previousTodoIndex];
+
+    moveTodoItem({
+      id: todoItem.id,
+      todo_id: todoItem.todo_id,
+      target_todo_id: previousTodo.id,
+    });
+  }
 
   return (
     <Popover>
@@ -37,11 +71,26 @@ const TodoItemActions = ({ todoItem }: TodoItemActionsProps) => {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="space-y-3" data-no-dnd="true">
-        <div className="flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer">
+        <div
+          className={`flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer ${
+            status === 'executing' || !todos
+              ? 'opacity-50 pointer-events-none'
+              : ''
+          }`}
+          onClick={handleMoveRight}
+        >
           <ArrowRightIcon size={14} strokeWidth={2.5} />
           <span>Move Right</span>
         </div>
-        <div className="flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer">
+
+        <div
+          className={`flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer ${
+            status === 'executing' || !todos
+              ? 'opacity-50 pointer-events-none'
+              : ''
+          }`}
+          onClick={handleMoveLeft}
+        >
           <ArrowLeftIcon size={14} strokeWidth={2.5} />
           <span>Move Left</span>
         </div>
