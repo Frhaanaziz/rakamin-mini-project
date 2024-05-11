@@ -28,6 +28,15 @@ interface CreateTodoFormProps extends React.ComponentPropsWithoutRef<'form'> {
   setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+/**
+ * Renders a form for creating a todo.
+ *
+ * @param {Object} props - The component props.
+ * @param {Function} props.setIsDialogOpen - A function to set the dialog open state.
+ * @param {string} props.className - The CSS class name for the form.
+ * @param {Object} props... - Any other props to be spread on the form element.
+ * @returns {JSX.Element} The rendered component.
+ */
 export default function CreateTodoForm({
   setIsDialogOpen,
   className,
