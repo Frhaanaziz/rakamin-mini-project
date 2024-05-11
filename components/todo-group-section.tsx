@@ -28,6 +28,7 @@ import {
   CustomTouchSensor,
   hasDraggableData,
 } from '@/lib/dnd';
+import { TodosContext } from '@/contexts/TodosContext';
 
 type TodoGroupSectionProps = {
   todos: TodoWithItems[];
@@ -61,42 +62,48 @@ const TodoGroupSection = ({ todos }: TodoGroupSectionProps) => {
     if ('document' in window) setCanShowDragOverlay(true);
   }, []);
 
+  useEffect(() => {
+    setItems(todos.flatMap((t) => t.items));
+  }, [todos]);
+
   return (
     <section className="grid grid-cols-4 gap-4 transition-all">
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCorners}
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDragOver={onDragOver}
-      >
-        <SortableContext items={todoIds}>
-          {todos.map((todo, i) => {
-            const colorIndex = i % todoColorList.length;
-            const color = todoColorList[colorIndex];
+      <TodosContext.Provider value={todos}>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onDragOver={onDragOver}
+        >
+          <SortableContext items={todoIds}>
+            {todos.map((todo, i) => {
+              const colorIndex = i % todoColorList.length;
+              const color = todoColorList[colorIndex];
 
-            return (
-              <div key={todo.id}>
-                <Todo
-                  todo={{
-                    ...todo,
-                    items: items.filter((item) => item.todo_id === todo.id),
-                  }}
-                  color={color}
-                />
-              </div>
-            );
-          })}
-        </SortableContext>
+              return (
+                <div key={todo.id}>
+                  <Todo
+                    todo={{
+                      ...todo,
+                      items: items.filter((item) => item.todo_id === todo.id),
+                    }}
+                    color={color}
+                  />
+                </div>
+              );
+            })}
+          </SortableContext>
 
-        {canShowDragOverlay &&
-          createPortal(
-            <DragOverlay>
-              {activeItem && <TodoItem todoItem={activeItem} />}
-            </DragOverlay>,
-            document.body
-          )}
-      </DndContext>
+          {canShowDragOverlay &&
+            createPortal(
+              <DragOverlay>
+                {activeItem && <TodoItem todoItem={activeItem} />}
+              </DragOverlay>,
+              document.body
+            )}
+        </DndContext>
+      </TodosContext.Provider>
     </section>
   );
 
