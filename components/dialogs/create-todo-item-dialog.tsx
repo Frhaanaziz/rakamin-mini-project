@@ -15,6 +15,12 @@ interface CreateTodoItemDialogProps {
   todo_id: number;
 }
 
+/**
+ * Renders a dialog component for creating a new todo item.
+ * @param {CreateTodoItemDialogProps} props - The component props.
+ * @param {number} props.todo_id - The ID of the todo item.
+ * @returns {JSX.Element} The rendered component.
+ */
 const CreateTodoItemDialog = ({ todo_id }: CreateTodoItemDialogProps) => {
   const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false);
 
