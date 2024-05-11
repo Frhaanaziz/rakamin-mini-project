@@ -1,7 +1,6 @@
 'use client';
 import { CheckIcon } from 'lucide-react';
 import { Progress } from './ui/progress';
-
 import { Item, ItemDragData } from '@/types';
 import TodoItemActions from './todo-item-actions';
 import { useSortable } from '@dnd-kit/sortable';
