@@ -27,12 +27,12 @@ const TodoItemActions = ({ todoItem, todoId }: TodoItemActionsProps) => {
 
   return (
     <Popover>
-      <PopoverTrigger className={'ml-2'} asChild>
+      <PopoverTrigger className={'ml-2'} data-no-dnd="true" asChild>
         <Button variant={'ghost'} size={'icon'} className="shrink-0">
           <EllipsisIcon className="text-muted-foreground" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="space-y-3">
+      <PopoverContent className="space-y-3" data-no-dnd="true">
         <div className="flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer">
           <ArrowRightIcon size={14} strokeWidth={2.5} />
           <span>Move Right</span>

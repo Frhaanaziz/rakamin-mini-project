@@ -26,7 +26,8 @@ const UpdateTodoItemDialog = ({
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>{dialogTrigger}</DialogTrigger>
-      <DialogContent>
+
+      <DialogContent data-no-dnd="true">
         <DialogHeader>
           <DialogTitle>Edit Task</DialogTitle>
         </DialogHeader>

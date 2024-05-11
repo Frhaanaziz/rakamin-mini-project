@@ -49,7 +49,8 @@ function DeleteTodoItemDialog({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{dialogTrigger}</AlertDialogTrigger>
-      <AlertDialogContent>
+
+      <AlertDialogContent data-no-dnd="true">
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2">
             <TriangleAlertIcon
