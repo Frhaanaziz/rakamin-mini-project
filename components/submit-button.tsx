@@ -7,6 +7,17 @@ interface SubmitButtonProps extends ButtonProps {
   isSubmitting: boolean;
 }
 
+/**
+ * A custom submit button component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.text - The text to display on the button.
+ * @param {string} props.className - Additional CSS class names for the button.
+ * @param {boolean} props.isSubmitting - Indicates whether the form is currently submitting.
+ * @param {Object} props... - Additional props to be spread onto the button element.
+ * @returns {JSX.Element} The rendered SubmitButton component.
+ */
 const SubmitButton = ({
   text,
   className,
