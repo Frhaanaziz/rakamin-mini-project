@@ -11,13 +11,18 @@ import UpdateTodoItemForm from '../forms/update-todo-item-form';
 import { Item } from '@/types';
 
 interface UpdateTodoItemDialogProps {
-  todoId: number;
   todoItem: Item;
   dialogTrigger: JSX.Element;
 }
 
+/**
+ * Renders a dialog for updating a todo item.
+ * @param {UpdateTodoItemDialogProps} props - The component props.
+ * @param {TodoItem} props.todoItem - The todo item to be updated.
+ * @param {ReactNode} props.dialogTrigger - The trigger element for opening the dialog.
+ * @returns {JSX.Element} - The rendered component.
+ */
 const UpdateTodoItemDialog = ({
-  todoId,
   todoItem,
   dialogTrigger,
 }: UpdateTodoItemDialogProps) => {
@@ -35,7 +40,6 @@ const UpdateTodoItemDialog = ({
         <UpdateTodoItemForm
           className="mt-3"
           setIsDialogOpen={setIsDialogOpen}
-          todoId={todoId}
           todoItem={todoItem}
         />
       </DialogContent>
