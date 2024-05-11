@@ -14,20 +14,27 @@ import { useAction } from 'next-safe-action/hooks';
 import { deleteTodoItem } from '@/app/_actions/item';
 import { toast } from 'sonner';
 import { useId } from 'react';
+import { Item } from '@/types';
+import { useRouter } from 'next/navigation';
 
 type DeleteTodoItemDialogProps = {
-  itemId: number;
-  todoId: number;
+  todoItem: Item;
   dialogTrigger: JSX.Element;
   isDeleting?: (boolean: boolean) => void;
 };
 
+/**
+ * Renders a dialog component for deleting a todo item.
+ *
+ * @param {DeleteTodoItemDialogProps} props - The component props.
+ * @returns {JSX.Element} The rendered DeleteTodoItemDialog component.
+ */
 function DeleteTodoItemDialog({
-  itemId,
-  todoId,
+  todoItem,
   dialogTrigger,
   isDeleting,
 }: DeleteTodoItemDialogProps) {
+  const router = useRouter();
   const toastId = useId();
   const { execute: deleteItem } = useAction(deleteTodoItem, {
     onExecute: () => {
@@ -71,7 +78,7 @@ function DeleteTodoItemDialog({
           <AlertDialogAction
             variant={'destructive'}
             size={'sm'}
-            onClick={() => deleteItem({ id: itemId, todo_id: todoId })}
+            onClick={() => deleteItem(todoItem)}
           >
             Delete
           </AlertDialogAction>
