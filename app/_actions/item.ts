@@ -1,7 +1,6 @@
 'use server';
 
 import { backendApi } from '@/lib/axios';
-import { getErrorMessage } from '@/lib/utils';
 import {
   createItemSchema,
   deleteItemSchema,
@@ -15,6 +14,11 @@ import { revalidatePath } from 'next/cache';
 
 export const action = createSafeActionClient();
 
+/**
+ * Creates a new todo item.
+ * @param item - The item object containing the todo_id and other properties.
+ * @returns The created todo item.
+ */
 export const createTodoItem = action(createItemSchema, async (item) => {
   const { todo_id, ...rest } = item;
 
@@ -24,12 +28,24 @@ export const createTodoItem = action(createItemSchema, async (item) => {
   return data;
 });
 
+/**
+ * Retrieves the todo items for a specific todo.
+ *
+ * @param item - The todo item.
+ * @returns A promise that resolves to an array of todo items.
+ */
 export const getTodoItems = action(getItemsSchema, async (item) => {
   const { data } = await backendApi.get(`/todos/${item.todo_id}/items`);
 
   return data as Item[];
 });
 
+/**
+ * Updates a todo item.
+ *
+ * @param item - The item to be updated.
+ * @returns The updated item.
+ */
 export const updateTodoItem = action(updateItemSchema, async (item) => {
   const { todo_id, id, ...rest } = item;
 
@@ -42,6 +58,12 @@ export const updateTodoItem = action(updateItemSchema, async (item) => {
   return data as Item;
 });
 
+/**
+ * Deletes a todo item from the backend server.
+ *
+ * @param item - The item to be deleted.
+ * @returns The deleted item data.
+ */
 export const deleteTodoItem = action(deleteItemSchema, async (item) => {
   const { data } = await backendApi.delete(
     `/todos/${item.todo_id}/items/${item.id}`
@@ -51,6 +73,11 @@ export const deleteTodoItem = action(deleteItemSchema, async (item) => {
   return data;
 });
 
+/**
+ * Moves a todo item to a new location.
+ * @param item - The item to be moved.
+ * @returns The updated item data.
+ */
 export const moveTodoItem = action(moveItemSchema, async (item) => {
   const { todo_id, id, ...rest } = item;
 
