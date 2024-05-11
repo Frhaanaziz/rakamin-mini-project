@@ -9,6 +9,12 @@ import { z } from 'zod';
 
 export const action = createSafeActionClient();
 
+/**
+ * Creates a new todo item.
+ *
+ * @param values - The values for the new todo item.
+ * @returns The created todo item.
+ */
 export const createTodo = action(createTodoSchema, async (values) => {
   const { data } = await backendApi.post('/todos', values);
 
@@ -16,6 +22,10 @@ export const createTodo = action(createTodoSchema, async (values) => {
   return data as Todo;
 });
 
+/**
+ * Retrieves the list of todos from the backend API.
+ * @returns A promise that resolves to an array of Todo objects.
+ */
 export const getTodos = action(z.undefined(), async () => {
   const { data } = await backendApi.get('/todos');
 
