@@ -77,7 +77,11 @@ export default function UpdateTodoItemForm({
             <FormItem>
               <FormLabel>Task Name</FormLabel>
               <FormControl>
-                <Input placeholder="Type your Task" {...field} />
+                <Input
+                  placeholder="Type your Task"
+                  {...field}
+                  data-testid="update-todo-item-name"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
