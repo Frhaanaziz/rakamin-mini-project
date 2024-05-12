@@ -31,6 +31,7 @@ const SubmitButton = ({
       className={cn('gap-2 items-center', className)}
       disabled={isSubmitting}
       {...props}
+      data-testid="submit-button"
     >
       {text}
       {isSubmitting && <Loader2Icon size={18} className="animate-spin" />}
