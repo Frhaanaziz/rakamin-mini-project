@@ -7,7 +7,6 @@ import {
   useSensor,
   useSensors,
   DragStartEvent,
-  DragEndEvent,
   DragOverEvent,
   KeyboardSensor,
   closestCorners,
@@ -59,10 +58,12 @@ const TodoGroupSection = ({ todos }: TodoGroupSectionProps) => {
   const { execute: moveTodoItem } = useAction(moveTodoItemAction);
 
   useEffect(() => {
+    // Check if the document object is available.
     if ('document' in window) setCanShowDragOverlay(true);
   }, []);
 
   useEffect(() => {
+    // Update the items state when the todos change.
     setItems(todos.flatMap((t) => t.items));
   }, [todos]);
 
@@ -73,8 +74,8 @@ const TodoGroupSection = ({ todos }: TodoGroupSectionProps) => {
           sensors={sensors}
           collisionDetection={closestCorners}
           onDragStart={onDragStart}
-          onDragEnd={onDragEnd}
           onDragOver={onDragOver}
+          onDragEnd={() => setActiveItem(null)}
         >
           <SortableContext items={todoIds}>
             {todos.map((todo, i) => {
@@ -112,22 +113,16 @@ const TodoGroupSection = ({ todos }: TodoGroupSectionProps) => {
    * @param event The drag start event.
    */
   function onDragStart(event: DragStartEvent) {
+    // Check if the active sensor has draggable data.
     if (!hasDraggableData(event.active)) return;
     const data = event.active.data.current;
 
+    // Check if the draggable data is an item.
     if (data?.type === 'Item') {
+      // Set the active item.
       setActiveItem(data.item);
       return;
     }
-  }
-
-  /**
-   * Handles the drag end event.
-   *
-   * @param event - The drag end event.
-   */
-  function onDragEnd(event: DragEndEvent) {
-    setActiveItem(null);
   }
 
   /**
@@ -141,6 +136,7 @@ const TodoGroupSection = ({ todos }: TodoGroupSectionProps) => {
     const activeId = active.id;
     const overId = over.id;
 
+    // Check if the active and over ids are the same.
     if (activeId === overId) return;
 
     if (!hasDraggableData(active)) return;
@@ -149,8 +145,9 @@ const TodoGroupSection = ({ todos }: TodoGroupSectionProps) => {
     const overData = over.data.current;
 
     const isActiveAItem = activeData?.type === 'Item';
-    const isOverAItem = activeData?.type === 'Item';
+    const isOverAItem = overData?.type === 'Item';
 
+    // Check if the active data is an item.
     if (!isActiveAItem) return;
 
     if (isActiveAItem && isOverAItem) {
@@ -159,25 +156,28 @@ const TodoGroupSection = ({ todos }: TodoGroupSectionProps) => {
       const activeItem = items[activeIndex];
       const overItem = items[overIndex];
 
+      // Check if the active and over items are different.
       if (activeItem && overItem && activeItem.todo_id !== overItem.todo_id) {
+        // Move the item to the new todo.
         moveTodoItem({
           id: activeItem.id,
           todo_id: activeItem.todo_id,
           target_todo_id: overItem.todo_id as TodoType['id'],
         });
-      }
 
-      setItems((items) => {
-        if (activeItem && overItem && activeItem.todo_id !== overItem.todo_id) {
+        // Update the items state.
+        setItems((items) => {
           activeItem.todo_id = overItem.todo_id;
           return arrayMove(items, activeIndex, overIndex - 1);
-        }
-        return arrayMove(items, activeIndex, overIndex);
-      });
+        });
+      }
+
+      setItems((items) => arrayMove(items, activeIndex, overIndex));
     }
 
     const isOverATodo = overData?.type === 'Todo';
 
+    // Check if the over data is a todo.
     if (isActiveAItem && isOverATodo) {
       const activeIndex = items.findIndex((t) => t.id === activeId);
       const activeItem = items[activeIndex];
@@ -188,15 +188,14 @@ const TodoGroupSection = ({ todos }: TodoGroupSectionProps) => {
           todo_id: activeItem.todo_id,
           target_todo_id: overId as TodoType['id'],
         });
-      }
 
-      setItems((items) => {
-        if (activeItem) {
+        setItems((items) => {
           activeItem.todo_id = overId as TodoType['id'];
           return arrayMove(items, activeIndex, activeIndex);
-        }
-        return items;
-      });
+        });
+      }
+
+      setItems(items);
     }
   }
 };
