@@ -55,7 +55,10 @@ function DeleteTodoItemDialog({
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
 
-      <AlertDialogContent data-no-dnd="true">
+      <AlertDialogContent
+        data-no-dnd="true"
+        data-testid="delete-todo-item-dialog"
+      >
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2">
             <TriangleAlertIcon
@@ -77,6 +80,7 @@ function DeleteTodoItemDialog({
             variant={'destructive'}
             size={'sm'}
             onClick={() => deleteItem(todoItem)}
+            data-testid="confirm-button"
           >
             Delete
           </AlertDialogAction>
