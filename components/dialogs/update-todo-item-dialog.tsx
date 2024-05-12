@@ -12,7 +12,7 @@ import { Item } from '@/types';
 
 interface UpdateTodoItemDialogProps {
   todoItem: Item;
-  dialogTrigger: JSX.Element;
+  children: React.ReactNode;
 }
 
 /**
@@ -24,13 +24,13 @@ interface UpdateTodoItemDialogProps {
  */
 const UpdateTodoItemDialog = ({
   todoItem,
-  dialogTrigger,
+  children,
 }: UpdateTodoItemDialogProps) => {
   const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false);
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild>{dialogTrigger}</DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
 
       <DialogContent data-no-dnd="true">
         <DialogHeader>
