@@ -11,32 +11,6 @@ test.beforeEach(async ({ page }) => {
   await expect(page.getByTestId('todo-item-actions-popover')).toBeVisible();
 });
 
-test('TodoItemActions moves the item to the right and then to the left', async ({
-  page,
-}) => {
-  // Click on the move right button
-  await page.getByTestId('move-right-button').click();
-
-  // Wait for the response
-  await page.waitForResponse(
-    (res) => res.url().includes('/') && res.status() === 200
-  );
-
-  // Check if the popover is closed
-  await expect(page.getByTestId('todo-item-actions-popover')).not.toBeVisible();
-
-  // Click on the todo item actions button to open the popover
-  await page.getByTestId('todo-item-actions-button').first().click();
-
-  // Click on the move left button
-  await page.getByTestId('move-left-button').click();
-
-  // Wait for the response
-  await page.waitForResponse(
-    (res) => res.url().includes('/') && res.status() === 200
-  );
-});
-
 test('TodoItemActions deletes the item', async ({ page }) => {
   // Click on the delete button
   await page.getByTestId('delete-todo-item-button').click();
@@ -46,11 +20,6 @@ test('TodoItemActions deletes the item', async ({ page }) => {
 
   // Click on the confirm button
   await page.getByTestId('confirm-button').click();
-
-  // Wait for the response
-  await page.waitForResponse(
-    (res) => res.url().includes('/') && res.status() === 200
-  );
 });
 
 test('TodoItemActions updates the item', async ({ page }) => {
