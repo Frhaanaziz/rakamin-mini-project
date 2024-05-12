@@ -21,11 +21,15 @@ const CreateTodoDialog = () => {
     <>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
-          <Button size={'sm'} className="items-center gap-1">
+          <Button
+            size={'sm'}
+            className="items-center gap-1"
+            data-testid="add-new-group-button"
+          >
             <span className="text-xl">+</span> Add New Group
           </Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent data-testid="create-todo-dialog">
           <DialogHeader>
             <DialogTitle>Add New Group</DialogTitle>
           </DialogHeader>
