@@ -35,6 +35,28 @@ const TodoItemActions = ({ todoItem }: TodoItemActionsProps) => {
   const { execute: moveTodoItem, status } = useAction(moveTodoItemAction);
 
   /**
+   * Determines whether the todo item can be moved to the right.
+   * @returns {boolean} True if the todo item can be moved to the right, false otherwise.
+   */
+  const canMoveRight = React.useMemo(() => {
+    if (!todos) return false;
+
+    const todoIndex = todos.findIndex((todo) => todo.id === todoItem.todo_id);
+    return todoIndex !== todos.length - 1;
+  }, [todos, todoItem.todo_id]);
+
+  /**
+   * Determines whether the todo item can be moved to the left.
+   * @returns {boolean} True if the todo item can be moved to the left, false otherwise.
+   */
+  const canMoveLeft = React.useMemo(() => {
+    if (!todos) return false;
+
+    const todoIndex = todos.findIndex((todo) => todo.id === todoItem.todo_id);
+    return todoIndex !== 0;
+  }, [todos, todoItem.todo_id]);
+
+  /**
    * Moves the current todo item to the right.
    * @returns {Promise<void>} A promise that resolves when the move operation is complete.
    */
@@ -74,37 +96,55 @@ const TodoItemActions = ({ todoItem }: TodoItemActionsProps) => {
   return (
     <Popover>
       <PopoverTrigger className={'ml-2'} data-no-dnd="true" asChild>
-        <Button variant={'ghost'} size={'icon'} className="shrink-0">
+        <Button
+          variant={'ghost'}
+          size={'icon'}
+          className="shrink-0"
+          data-testid="todo-item-actions-button"
+        >
           <EllipsisIcon className="text-muted-foreground" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="space-y-3" data-no-dnd="true">
-        <div
-          className={`flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer ${
-            status === 'executing' || !todos
-              ? 'opacity-50 pointer-events-none'
-              : ''
-          }`}
-          onClick={handleMoveRight}
-        >
-          <ArrowRightIcon size={14} strokeWidth={2.5} />
-          <span>Move Right</span>
-        </div>
+      <PopoverContent
+        className="space-y-3"
+        data-no-dnd="true"
+        data-testid="todo-item-actions-popover"
+      >
+        {canMoveRight && (
+          <div
+            className={`flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer ${
+              status === 'executing' || !todos
+                ? 'opacity-50 pointer-events-none'
+                : ''
+            }`}
+            onClick={handleMoveRight}
+            data-testid="move-right-button"
+          >
+            <ArrowRightIcon size={14} strokeWidth={2.5} />
+            <span>Move Right</span>
+          </div>
+        )}
 
-        <div
-          className={`flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer ${
-            status === 'executing' || !todos
-              ? 'opacity-50 pointer-events-none'
-              : ''
-          }`}
-          onClick={handleMoveLeft}
-        >
-          <ArrowLeftIcon size={14} strokeWidth={2.5} />
-          <span>Move Left</span>
-        </div>
+        {canMoveLeft && (
+          <div
+            className={`flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer ${
+              status === 'executing' || !todos
+                ? 'opacity-50 pointer-events-none'
+                : ''
+            }`}
+            onClick={handleMoveLeft}
+            data-testid="move-left-button"
+          >
+            <ArrowLeftIcon size={14} strokeWidth={2.5} />
+            <span>Move Left</span>
+          </div>
+        )}
 
         <UpdateTodoItemDialog todoItem={todoItem}>
-          <div className="flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer">
+          <div
+            className="flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer"
+            data-testid="update-todo-item-button"
+          >
             <PencilIcon size={14} strokeWidth={2.5} />
             <span>Edit</span>
           </div>
@@ -115,6 +155,7 @@ const TodoItemActions = ({ todoItem }: TodoItemActionsProps) => {
             className={`flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer ${
               isDeleting && 'opacity-50 pointer-events-none'
             }`}
+            data-testid="delete-todo-item-button"
           >
             <Trash2Icon size={14} strokeWidth={2.5} />
             <span>Delete</span>
