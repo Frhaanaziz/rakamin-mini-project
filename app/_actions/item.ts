@@ -12,7 +12,7 @@ import { Item } from '@/types';
 import { createSafeActionClient } from 'next-safe-action';
 import { revalidatePath } from 'next/cache';
 
-export const action = createSafeActionClient();
+const action = createSafeActionClient();
 
 /**
  * Creates a new todo item.
