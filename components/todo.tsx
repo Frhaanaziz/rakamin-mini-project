@@ -57,10 +57,13 @@ const Todo = ({ todo, color }: TodoProps) => {
           color: color.deepColor,
           borderColor: color.deepColor,
         }}
+        data-testid="todo-title"
       >
         {title}
       </Badge>
-      <p className="my-2 text-xs font-bold">{description}</p>
+      <p className="my-2 text-xs font-bold" data-testid="todo-description">
+        {description}
+      </p>
       <div className="space-y-3">
         <SortableContext items={todoItemsIds}>
           {todoItems.length ? (
