@@ -15,12 +15,11 @@ import { deleteTodoItem } from '@/app/_actions/item';
 import { toast } from 'sonner';
 import { useId } from 'react';
 import { Item } from '@/types';
-import { useRouter } from 'next/navigation';
 
 type DeleteTodoItemDialogProps = {
   todoItem: Item;
-  dialogTrigger: JSX.Element;
   isDeleting?: (boolean: boolean) => void;
+  children: React.ReactNode;
 };
 
 /**
@@ -31,10 +30,9 @@ type DeleteTodoItemDialogProps = {
  */
 function DeleteTodoItemDialog({
   todoItem,
-  dialogTrigger,
+  children,
   isDeleting,
 }: DeleteTodoItemDialogProps) {
-  const router = useRouter();
   const toastId = useId();
   const { execute: deleteItem } = useAction(deleteTodoItem, {
     onExecute: () => {
@@ -55,7 +53,7 @@ function DeleteTodoItemDialog({
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>{dialogTrigger}</AlertDialogTrigger>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
 
       <AlertDialogContent data-no-dnd="true">
         <AlertDialogHeader>
