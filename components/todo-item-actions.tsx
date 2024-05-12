@@ -32,9 +32,12 @@ type TodoItemActionsProps = {
 const TodoItemActions = ({ todoItem }: TodoItemActionsProps) => {
   const todos = useTodosContext();
   const [isDeleting, setIsDeleting] = React.useState<boolean>(false);
-
   const { execute: moveTodoItem, status } = useAction(moveTodoItemAction);
 
+  /**
+   * Moves the current todo item to the right.
+   * @returns {Promise<void>} A promise that resolves when the move operation is complete.
+   */
   async function handleMoveRight() {
     if (!todos) return;
 
@@ -49,6 +52,11 @@ const TodoItemActions = ({ todoItem }: TodoItemActionsProps) => {
     });
   }
 
+  /**
+   * Moves the current todo item to the left by updating its target_todo_id.
+   *
+   * @returns {Promise<void>} A promise that resolves when the todo item is moved.
+   */
   async function handleMoveLeft() {
     if (!todos) return;
 
@@ -95,30 +103,23 @@ const TodoItemActions = ({ todoItem }: TodoItemActionsProps) => {
           <span>Move Left</span>
         </div>
 
-        <UpdateTodoItemDialog
-          dialogTrigger={
-            <div className="flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer">
-              <PencilIcon size={14} strokeWidth={2.5} />
-              <span>Edit</span>
-            </div>
-          }
-          todoItem={todoItem}
-        />
+        <UpdateTodoItemDialog todoItem={todoItem}>
+          <div className="flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer">
+            <PencilIcon size={14} strokeWidth={2.5} />
+            <span>Edit</span>
+          </div>
+        </UpdateTodoItemDialog>
 
-        <DeleteTodoItemDialog
-          dialogTrigger={
-            <div
-              className={`flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer ${
-                isDeleting && 'opacity-50 pointer-events-none'
-              }`}
-            >
-              <Trash2Icon size={14} strokeWidth={2.5} />
-              <span>Delete</span>
-            </div>
-          }
-          isDeleting={setIsDeleting}
-          todoItem={todoItem}
-        />
+        <DeleteTodoItemDialog isDeleting={setIsDeleting} todoItem={todoItem}>
+          <div
+            className={`flex items-center gap-4 text-sm hover:text-primary transition font-semibold hover:cursor-pointer ${
+              isDeleting && 'opacity-50 pointer-events-none'
+            }`}
+          >
+            <Trash2Icon size={14} strokeWidth={2.5} />
+            <span>Delete</span>
+          </div>
+        </DeleteTodoItemDialog>
       </PopoverContent>
     </Popover>
   );
