@@ -78,9 +78,13 @@ export default function CreateTodoForm({
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="Placehoder" {...field} />
+                <Input
+                  placeholder="Placehoder"
+                  {...field}
+                  data-testid="create-todo-title"
+                />
               </FormControl>
-              <FormMessage />
+              <FormMessage data-testid="create-todo-title-error" />
             </FormItem>
           )}
         />
@@ -91,9 +95,13 @@ export default function CreateTodoForm({
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="Placeholder" {...field} />
+                <Textarea
+                  placeholder="Placeholder"
+                  {...field}
+                  data-testid="create-todo-description"
+                />
               </FormControl>
-              <FormMessage />
+              <FormMessage data-testid="create-todo-description-error" />
             </FormItem>
           )}
         />
@@ -104,6 +112,7 @@ export default function CreateTodoForm({
             type="button"
             variant={'secondary'}
             disabled={status === 'executing'}
+            onClick={() => setIsDialogOpen(false)}
           >
             Cancel
           </Button>
