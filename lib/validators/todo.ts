@@ -19,3 +19,7 @@ export const createTodoSchema = todoSchema.pick({
   title: true,
   description: true,
 });
+
+export const deleteTodoSchema = todoSchema.pick({
+  id: true,
+});
