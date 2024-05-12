@@ -32,7 +32,7 @@ const UpdateTodoItemDialog = ({
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
 
-      <DialogContent data-no-dnd="true">
+      <DialogContent data-no-dnd="true" data-testid={'update-todo-item-dialog'}>
         <DialogHeader>
           <DialogTitle>Edit Task</DialogTitle>
         </DialogHeader>
