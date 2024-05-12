@@ -68,7 +68,7 @@ const TodoGroupSection = ({ todos }: TodoGroupSectionProps) => {
   }, [todos]);
 
   return (
-    <section className="grid grid-cols-4 gap-4 transition-all">
+    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 transition-all">
       <TodosContext.Provider value={todos}>
         <DndContext
           sensors={sensors}
